@@ -1,21 +1,32 @@
-const customers = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Doe' },
-    // ...
-  ];
-  
-  const invoices = [
-    {
-      customer_id: customers[0].id,
-      amount: 15795,
-      status: 'pending',
-      date: '2022-12-06',
-    },
-    {
-      customer_id: customers[1].id,
-      amount: 20348,
-      status: 'pending',
-      date: '2022-11-14',
-    },
-    // ...
-  ];
+// app/lib/placeholder-data.ts
+export const users = [
+  {
+    id: 1,
+    name: 'User 1',
+    email: 'user1@example.com',
+    password: 'password123'
+  },
+  {
+    id: 2,
+    name: 'User 2',
+    email: 'user2@example.com',
+    password: 'password123'
+  }
+];
+
+export const invoices = [
+  {
+    id: 1,
+    customer_id: 1,
+    amount: 100,
+    status: 'pending',
+    date: '2024-01-01'
+  },
+  {
+    id: 2,
+    customer_id: 2,
+    amount: 200,
+    status: 'paid',
+    date: '2024-01-02'
+  }
+];
