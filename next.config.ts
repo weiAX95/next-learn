@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+/** @type {import('next').NextConfig} */
+const nextConfig :NextConfig= {
+  images: {
+    domains: [], // 如果需要从外部域名加载图片
+    formats: ['image/avif', 'image/webp'],
+  },
+}
 
-export default nextConfig;
+module.exports = nextConfig
