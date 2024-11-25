@@ -55,7 +55,6 @@ export default function RevenueChart({
 
   return (
     <div className="w-full bg-white p-6 rounded-xl shadow-sm">
-      1
       <Bar data={data} options={options} />
     </div>
   );
