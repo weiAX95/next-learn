@@ -1,5 +1,6 @@
 import { sql } from '@vercel/postgres';
-
+import { CustomerField } from './definitions';
+import { unstable_noStore as noStore } from 'next/cache';
 // 定义数据类型
 export type User = {
   id: number;
@@ -16,11 +17,15 @@ export type Customer = {
 };
 
 export type Invoice = {
-  id: number;
-  customer_id: number;
+  id: string;
+  customer_id: string;
   amount: number;
-  status: 'pending' | 'paid';
   date: string;
+  // 'pending' | 'paid'
+  status: string;
+  name: string;
+  email: string;
+  image_url: string;
 };
 
 // 数据获取函数
@@ -59,7 +64,7 @@ export async function getInvoices() {
   }
 }
 
-export async function getInvoiceById(id: number) {
+export async function getInvoiceById(id: number| string) {
   try {
     const result = await sql<Invoice>`
       SELECT invoices.*, customers.name as customer_name
@@ -136,5 +141,65 @@ export async function getInvoicesByStatus(status: 'pending' | 'paid') {
   } catch (error) {
     console.error('Error:', error);
     throw new Error(`Failed to fetch ${status} invoices.`);
+  }
+}
+
+
+
+
+export async function fetchFilteredInvoices(
+  query: string,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+
+  try {
+    const invoices = await sql<Invoice>`
+      SELECT 
+        invoices.id,
+        invoices.amount,
+        invoices.date,
+        invoices.status,
+        customers.name,
+        customers.email,
+        customers.image_url
+      FROM invoices
+      JOIN customers ON invoices.customer_id = customers.id
+      WHERE
+        customers.name ILIKE ${`%${query}%`} OR
+        customers.email ILIKE ${`%${query}%`} OR
+        invoices.amount::text ILIKE ${`%${query}%`} OR
+        invoices.date::text ILIKE ${`%${query}%`} OR
+        invoices.status ILIKE ${`%${query}%`}
+      ORDER BY invoices.date DESC
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return invoices.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch invoices.');
+  }
+}
+
+// 定义常量
+const ITEMS_PER_PAGE = 6;
+
+
+export async function fetchCustomers() {
+  noStore();
+  try {
+    const data = await sql<CustomerField>`
+      SELECT
+        id,
+        name
+      FROM customers
+      ORDER BY name ASC
+    `;
+
+    return data.rows;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch customers');
   }
 }

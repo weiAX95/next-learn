@@ -5,6 +5,9 @@ import { usePathname } from 'next/navigation';
 import { Home, Receipt, Users, Settings, Menu, X, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import clsx from 'clsx';
+import { PowerIcon } from '@heroicons/react/24/outline';
+import { signOutAction } from '@/app/lib/actions/auth';
+
 
 const menuItems = [
   { name: 'Dashboard', icon: Home, href: '/dashboard' },
@@ -45,6 +48,7 @@ export default function SideNav() {
       >
         {isOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
+      
 
       {/* Sidebar */}
       <div className={clsx(
@@ -109,7 +113,13 @@ export default function SideNav() {
             );
           })}
         </nav>
-
+        1
+      <form action={signOutAction}>
+        <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3">
+          <PowerIcon className="w-6" />
+          <div className="hidden md:block">Sign Out</div>
+        </button>
+      </form>
         {/* Footer Section */}
         <div className={clsx(
           "absolute bottom-0 left-0 right-0 p-4",

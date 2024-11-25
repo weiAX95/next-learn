@@ -20,13 +20,19 @@ export const invoices = [
     customer_id: 1,
     amount: 100,
     status: 'pending',
-    date: '2024-01-01'
+    date: '2024-01-01',
+    name: 'John Doe',
+    email: 'john@example.com',
+    image_url: '/customers/john.png'
   },
   {
     id: 2,
     customer_id: 2,
     amount: 200,
     status: 'paid',
-    date: '2024-01-02'
+    date: '2024-01-02',
+    name: 'Jane Smith',
+    email: 'jane@example.com',
+    image_url: '/customers/jane.png'
   }
 ];

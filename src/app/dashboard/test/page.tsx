@@ -13,20 +13,30 @@ function formatCurrency(amount: number) {
 }
 
 export default async function Page() {
+  console.log('Fetching revenue data...');
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  const [
+    invoiceStats,
+    latestInvoices,
+    customers
+  ] = await Promise.all([
+    getInvoiceStats(),
+    getLatestInvoices(),
+    getCustomers()
+  ]);
+  console.log('Data fetch completed after 3 seconds.');
   const {
     total_invoices: numberOfInvoices = 0,
     total_amount: totalAmount = 0,
     paid_invoices: paidInvoices = 0,
     pending_invoices: pendingInvoices = 0,
-  } = await getInvoiceStats();
+  } = invoiceStats;
 
   // 获取最新发票
-  const latestInvoices = await getLatestInvoices();
-
+  // const latestInvoices = await getLatestInvoices();
   // 获取客户总数
-  const customers = await getCustomers();
+  // const customers = await getCustomers();
   const numberOfCustomers = customers.length;
-
 
    // 计算已收款和待收款金额
    const totalPaidInvoices = formatCurrency(totalAmount * (paidInvoices / numberOfInvoices));

@@ -1,4 +1,3 @@
-// app/ui/dashboard/revenue-chart.tsx
 'use client';
 
 import { Bar } from 'react-chartjs-2';
