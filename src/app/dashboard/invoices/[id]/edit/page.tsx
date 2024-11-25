@@ -4,15 +4,19 @@ import { getInvoiceById, fetchCustomers } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 import { formatInvoiceForForm } from '@/app/lib/definitions';
 
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: PageProps) {
   const id = params.id;
   const [invoice, customers] = await Promise.all([
-    formatInvoiceForForm(await getInvoiceById(id)),
+    getInvoiceById(id).then(inv => inv ? formatInvoiceForForm(inv) : null),
     fetchCustomers(),
   ]);
 
-  
   if (!invoice) {
     notFound();
   }
